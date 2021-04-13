@@ -8,6 +8,8 @@ import {MyButtonConfig} from '../my-button-config';
 })
 export class ButtonComponent implements OnInit {
   @Input() buttonConfig: MyButtonConfig;
+  @Input() url: string;
+
 
   constructor() {}
 

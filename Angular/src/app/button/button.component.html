@@ -1,5 +1,7 @@
-<button type="button"
-        class="{{buttonConfig?.customCssClass}}"
-        (click)="onBtnClick()">
-  {{ buttonConfig.text | uppercase}}
+<button mat-raised-button color={{buttonConfig.customCssClass}}
+          (click)="onBtnClick()">
+  <mat-icon >{{ buttonConfig.icon}}</mat-icon> {{ buttonConfig.text | uppercase}}
 </button>
+
+
+
