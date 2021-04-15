@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {PrimaryButton} from './PrimaryButton';
 import {PeriodicElement} from './periodic-element';
 import {MyHeaders} from './my-headers';
@@ -6,12 +6,15 @@ import {MyTableConfig} from './my-table-config';
 import {MyButtonConfig} from './my-button-config';
 import {MyOrder} from './my-order';
 import {MySearch} from './my-search';
+import {MyPagination} from './my-pagination';
+import {MyTableActionEnum} from './my-table-action-enum';
 
 
 const buttons: MyButtonConfig[] = [
   {customCssClass: 'accent', text: 'save', icon: 'done'},
   {customCssClass: 'warn', text: 'delete', icon: 'delete'}
 ];
+
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', buttons},
@@ -30,8 +33,7 @@ const headerconfig: MyHeaders[] = [
   {key: 'position' , label: 'posizione'},
   {key: 'name' , label: 'nome'},
   {key: 'weight' , label: 'peso'},
-  {key: 'symbol' , label: 'simbolo'},
-  {key: 'actions' , label: 'actions'}];
+  {key: 'symbol' , label: 'simbolo'}];
 
 const orderConfig: MyOrder = {
   defaultColumn: 'position',
@@ -42,11 +44,22 @@ const search: MySearch = {
   colums: ['name', 'weight' , 'symbol']
 };
 
+const pagination: MyPagination =
+{
+  itemsPerPage: 2, itemsPerPageOptions: [2, 5, 10, 20]
+};
+
+
+
 const tableconfig: MyTableConfig = {
   headers: headerconfig,
   order: orderConfig,
-  search
+  search,
+  pagination,
+  actions: [MyTableActionEnum.NEW_ROW,
+   MyTableActionEnum.DELETE, MyTableActionEnum.EDIT]
 };
+
 
 @Component({
   selector: 'app-root',
@@ -59,4 +72,7 @@ export class AppComponent {
   dataSource = ELEMENT_DATA;
   myTableConfig = tableconfig;
 
+  newRoute($event: string): void {
+    this.title = $event;
+  }
 }
