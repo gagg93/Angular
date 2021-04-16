@@ -23,8 +23,8 @@
     </th>
     <th>actions</th>
   </tr>
-  <tr *ngFor="let element of pagedList">
-    <ng-container *ngFor="let header of displayedColumns.headers">
+  <tr *ngFor="let element of filteredList | slice: currentPage * displayedColumns.pagination.itemsPerPage : (1 + currentPage) * displayedColumns.pagination.itemsPerPage">
+    <ng-container *ngFor="let header of displayedColumns.headers ">
       <td>{{element[header.key]}}</td>
     </ng-container>
     <td>
@@ -34,7 +34,7 @@
 </table>
   <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(0)"><app-button [buttonConfig]=button3 (click)="route('/new')"></app-button></ng-container>
   <div class="justify-content-lg-center form-inline">
-    <input #pageBox type="number" class="input-group-text" (keydown.enter)="onSelectPage(pageBox.value)" placeholder="{{currentPage +1}}">
+    <input #pageBox type="number" class="input-group-text" (change)="onSelectPage(pageBox.value)" value="{{currentPage +1}}" >
     <select #selectBox class="custom-select" (change)="onPageNumberSelect(selectBox.value)">
       <option *ngFor="let npages of displayedColumns.pagination.itemsPerPageOptions">{{npages}}</option>
     </select>

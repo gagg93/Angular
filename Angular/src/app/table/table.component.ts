@@ -17,7 +17,6 @@ export class TableComponent implements OnInit {
   @Input() idRow = 'id';
   @Output() newRouteEvent = new EventEmitter<string>();
   filteredList: any[];
-  pagedList: any[];
   lastSortedByField;
   ascendingOrder = true;
   currentPage = 0;
@@ -40,10 +39,6 @@ export class TableComponent implements OnInit {
     this.ascendingOrder = this.displayedColumns.order.orderType !== 'ascending';
     this.lastSortedByField = this.displayedColumns.order.defaultColumn;
     this.onHeaderClick(this.displayedColumns.order.defaultColumn);
-    this.pagedList = [];
-    for (let i = 0; i < this.displayedColumns.pagination.itemsPerPage; i++){
-      this.pagedList.push(this.filteredList[i]);
-    }
   }
 
   onHeaderClick(header: string): void{
@@ -102,14 +97,8 @@ export class TableComponent implements OnInit {
     }else{
       this.currentPage = (Number(value) - 1);
     }
-    this.pagedList = [];
-    for (let i = 0; i < this.displayedColumns.pagination.itemsPerPage; i++){
-      const z: number = this.currentPage * this.displayedColumns.pagination.itemsPerPage + i;
-      if (z < this.filteredList.length) {
-        this.pagedList.push(this.filteredList[z]);
-      }
     }
-   }
+
 
   onPageNumberSelect(value: string): void{
     this.displayedColumns.pagination.itemsPerPage = +value;

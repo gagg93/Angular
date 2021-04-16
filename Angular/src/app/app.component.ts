@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PrimaryButton} from './PrimaryButton';
 import {PeriodicElement} from './periodic-element';
 import {MyHeaders} from './my-headers';
 import {MyTableConfig} from './my-table-config';
@@ -48,7 +47,6 @@ const tableconfig: MyTableConfig = {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  myButtonConfig = PrimaryButton;
   title: string;
   dataSource: PeriodicElement[] = [];
   myTableConfig = tableconfig;
