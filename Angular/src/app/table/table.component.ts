@@ -2,8 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MyTableConfig} from '../my-table-config';
 import {MyButtonConfig} from '../my-button-config';
 import { Output, EventEmitter } from '@angular/core';
-
-
+import {MyWrapper} from '../my-wrapper';
 
 
 @Component({
@@ -14,8 +13,7 @@ import { Output, EventEmitter } from '@angular/core';
 export class TableComponent implements OnInit {
   @Input() displayedColumns: MyTableConfig;
   @Input() dataSource: any[];
-  @Input() idRow = 'id';
-  @Output() newRouteEvent = new EventEmitter<string>();
+  @Output() newRouteEvent = new EventEmitter<MyWrapper>();
   filteredList: any[];
   lastSortedByField;
   ascendingOrder = true;
@@ -29,6 +27,13 @@ export class TableComponent implements OnInit {
   button3: MyButtonConfig =
     {customCssClass: 'primary', text: 'new', icon: 'add'
     };
+  myWrapper: MyWrapper = {object: null, command: 'ciao'};
+
+  setMyWrapper(object: any, command: string): MyWrapper{
+    this.myWrapper.object = object;
+    this.myWrapper.command = command;
+    return this.myWrapper;
+  }
 
   order(): void {}
 
@@ -105,7 +110,7 @@ export class TableComponent implements OnInit {
     this.onSelectPage('1');
   }
 
-  route(url: string): void {
+  route(url: any): void {
     this.newRouteEvent.emit(url);
   }
 }

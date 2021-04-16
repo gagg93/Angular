@@ -1,4 +1,5 @@
-{{title}}
-<app-table [dataSource]="dataSource" [displayedColumns]="myTableConfig" [idRow]="myTableConfig.headers[0].key"
+{{test.command}}
+{{test.object.name}}
+<app-table [dataSource]="dataSource" [displayedColumns]="myTableConfig"
            (newRouteEvent)="newRoute($event)"
 ></app-table>

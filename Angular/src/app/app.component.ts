@@ -7,6 +7,7 @@ import {MySearch} from './my-search';
 import {MyPagination} from './my-pagination';
 import {MyTableActionEnum} from './my-table-action-enum';
 import {ElementsService} from './elements.service';
+import {MyWrapper} from './my-wrapper';
 
 
 const headerconfig: MyHeaders[] = [
@@ -48,6 +49,8 @@ const tableconfig: MyTableConfig = {
 })
 export class AppComponent implements OnInit{
   title: string;
+  private element: PeriodicElement = {position: 1, name: 'ciao', symbol: 'k', weight: 54};
+  test: MyWrapper = {object: this.element, command: 'ciao'};
   dataSource: PeriodicElement[] = [];
   myTableConfig = tableconfig;
 
@@ -62,7 +65,7 @@ export class AppComponent implements OnInit{
     this.elementsService.getElements().subscribe(elements => this.dataSource = elements);
   }
 
-  newRoute($event: string): void {
-    this.title = $event;
+  newRoute($event: MyWrapper): void {
+    this.test = $event;
   }
 }
