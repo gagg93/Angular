@@ -23,7 +23,7 @@
     </th>
     <th>actions</th>
   </tr>
-  <tr *ngFor="let element of filteredList | slice: currentPage * displayedColumns.pagination.itemsPerPage : (1 + currentPage) * displayedColumns.pagination.itemsPerPage">
+  <tr *ngFor="let element of filteredList | pagination: currentPage : displayedColumns.pagination.itemsPerPage">
     <ng-container *ngFor="let header of displayedColumns.headers ">
       <td>{{element[header.key]}}</td>
     </ng-container>

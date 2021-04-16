@@ -10,6 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { TableComponent } from './table/table.component';
+import { PaginationPipe } from './pagination.pipe';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { TableComponent } from './table/table.component';
     AppComponent,
     ButtonComponent,
     TableComponent,
+    PaginationPipe,
   ],
   imports: [
     BrowserModule,
