@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {MyButtonConfig} from '../my-button-config';
 
 @Component({
@@ -8,15 +8,15 @@ import {MyButtonConfig} from '../my-button-config';
 })
 export class ButtonComponent implements OnInit {
   @Input() buttonConfig: MyButtonConfig;
-  @Input() url: string;
+  @Output() newRouteEvent = new EventEmitter<string>();
 
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  onBtnClick(): void{
-
+  onBtnClick(url: string): void{
+    this.newRouteEvent.emit(url);
   }
 
 }

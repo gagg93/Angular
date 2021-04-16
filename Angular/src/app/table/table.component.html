@@ -21,18 +21,18 @@
       </ng-template>
       <ng-template #elsecontent>{{header.label}}</ng-template>
     </th>
-    <th>actions</th>
+    <ng-container *ngIf="displayedColumns.actions.includes(1) || displayedColumns.actions.includes(2)"><th>actions</th></ng-container>
   </tr>
   <tr *ngFor="let element of filteredList | pagination: currentPage : displayedColumns.pagination.itemsPerPage">
     <ng-container *ngFor="let header of displayedColumns.headers ">
       <td>{{element[header.key]}}</td>
     </ng-container>
-    <td>
-      <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(1)"><app-button [buttonConfig]=button1 (click)="route('/update/' + element[idRow])"></app-button></ng-container>
-        <ng-container class="float-right" *ngIf="displayedColumns.actions.includes(2)"><app-button [buttonConfig]=button2 (click)="route('/delete/' + element[idRow])"></app-button></ng-container>
+    <td *ngIf="displayedColumns.actions.includes(1) || displayedColumns.actions.includes(2)">
+      <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(1)"><app-button [buttonConfig]=button1 (newRouteEvent)="route($event + '/' + element[idRow])"></app-button></ng-container>
+        <ng-container class="float-right" *ngIf="displayedColumns.actions.includes(2)"><app-button [buttonConfig]=button2 (newRouteEvent)="route($event + '/' + element[idRow])"></app-button></ng-container>
     </td>
 </table>
-  <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(0)"><app-button [buttonConfig]=button3 (click)="route('/new')"></app-button></ng-container>
+  <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(0)"><app-button [buttonConfig]=button3 (newRouteEvent)="route($event)"></app-button></ng-container>
   <div class="justify-content-lg-center form-inline">
     <input #pageBox type="number" class="input-group-text" (change)="onSelectPage(pageBox.value)" value="{{currentPage +1}}" >
     <select #selectBox class="custom-select" (change)="onPageNumberSelect(selectBox.value)">

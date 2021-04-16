@@ -37,7 +37,7 @@ const tableconfig: MyTableConfig = {
   search,
   pagination,
   actions: [MyTableActionEnum.NEW_ROW,
-   MyTableActionEnum.DELETE, MyTableActionEnum.EDIT]
+    MyTableActionEnum.DELETE, MyTableActionEnum.EDIT]
 };
 
 
