@@ -28,8 +28,8 @@
       <td>{{element[header.key]}}</td>
     </ng-container>
     <td>
-      <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(1)"><app-button [buttonConfig]=button1 (click)="route('/update/' + element[idrow])"></app-button></ng-container>
-        <ng-container class="float-right" *ngIf="displayedColumns.actions.includes(2)"><app-button [buttonConfig]=button2 (click)="route('/delete/' + element[idrow])"></app-button></ng-container>
+      <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(1)"><app-button [buttonConfig]=button1 (click)="route('/update/' + element[idRow])"></app-button></ng-container>
+        <ng-container class="float-right" *ngIf="displayedColumns.actions.includes(2)"><app-button [buttonConfig]=button2 (click)="route('/delete/' + element[idRow])"></app-button></ng-container>
     </td>
 </table>
   <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(0)"><app-button [buttonConfig]=button3 (click)="route('/new')"></app-button></ng-container>

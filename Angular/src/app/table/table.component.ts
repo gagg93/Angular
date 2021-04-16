@@ -14,14 +14,12 @@ import { Output, EventEmitter } from '@angular/core';
 export class TableComponent implements OnInit {
   @Input() displayedColumns: MyTableConfig;
   @Input() dataSource: any[];
-  @Input() idrow = 'id';
+  @Input() idRow = 'id';
   @Output() newRouteEvent = new EventEmitter<string>();
   filteredList: any[];
   pagedList: any[];
   lastSortedByField;
   ascendingOrder = true;
-  i: number;
-  number: number;
   currentPage = 0;
   button1: MyButtonConfig =
     {customCssClass: 'accent', text: 'save', icon: 'done'
