@@ -13,7 +13,7 @@ import {MyWrapper} from '../my-wrapper';
 export class TableComponent implements OnInit {
   @Input() displayedColumns: MyTableConfig;
   @Input() dataSource: any[];
-  @Output() newRouteEvent = new EventEmitter<MyWrapper>();
+  @Output() newTableEvent = new EventEmitter<MyWrapper>();
   filteredList: any[];
   lastSortedByField;
   ascendingOrder = true;
@@ -110,8 +110,8 @@ export class TableComponent implements OnInit {
     this.onSelectPage('1');
   }
 
-  route(url: any): void {
-    this.newRouteEvent.emit(url);
+  buttonClick(url: any): void {
+    this.newTableEvent.emit(url);
   }
 }
 

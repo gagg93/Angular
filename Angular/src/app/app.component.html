@@ -1,5 +1,6 @@
 {{test.command}}
 {{test.object.name}}
+{{test.object.symbol}}
 <app-table [dataSource]="dataSource" [displayedColumns]="myTableConfig"
-           (newRouteEvent)="newRoute($event)"
+           (newTableEvent)="newRoute($event)"
 ></app-table>
