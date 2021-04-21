@@ -1,0 +1,15 @@
+ciao
+<div *ngFor="let row of object | keys">
+  <ng-container *ngIf="row !== 'id'">{{row | titlecase | removeUnderscore}}:
+    <ng-container *ngIf="isDate(object[row])">
+      <input type="datetime-local" pattern="yyyy-MM-ddThh:mm:ss.SSSZ" [(ngModel)] = "object[row]" >
+    </ng-container>
+    <ng-container *ngIf="!isDate(object[row])">
+      <input type="text" [(ngModel)] = "object[row]" >
+    </ng-container>
+  </ng-container>
+</div>
+<app-button [buttonConfig]="button2" (click)="goBack()"></app-button>
+<ng-container *ngIf="object.id === null; then thencontent else elsecontent"></ng-container>
+<ng-template #thencontent><app-button [buttonConfig]="button3" (click)="save()"></app-button></ng-template>
+<ng-template #elsecontent><app-button [buttonConfig]="button1" (click)="save()"></app-button></ng-template>

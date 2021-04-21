@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {MyButtonConfig} from '../my-button-config';
+import {MyButtonConfig} from '../../my-configs/my-button-config';
 
 @Component({
   selector: 'app-button',
@@ -15,8 +15,8 @@ export class ButtonComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onBtnClick(url: string): void{
-    this.newButtonEvent.emit(url);
+  onBtnClick(action: string): void{
+    this.newButtonEvent.emit(action);
   }
 
 }

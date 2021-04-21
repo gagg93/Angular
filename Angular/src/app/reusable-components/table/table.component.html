@@ -1,10 +1,11 @@
 <br>
+
 <br>
 <div class="container">
   <div class="float-right form-inline">
       <input #searchBox class="input-group-text" placeholder="cerca" (keydown.enter)="onSearchClick(searchBox.value, fieldBox.value) ">
       <select #fieldBox class="custom-select">
-        <option *ngFor="let field of displayedColumns.search.colums">{{field}}</option>
+        <option *ngFor="let field of displayedColumns.search.colums">{{field | titlecase | removeUnderscore}}</option>
       </select>
   </div>
   <br>
@@ -25,7 +26,11 @@
   </tr>
   <tr *ngFor="let element of filteredList | pagination: currentPage : displayedColumns.pagination.itemsPerPage">
     <ng-container *ngFor="let header of displayedColumns.headers ">
-      <td>{{element[header.key]}}</td>
+      <ng-container *ngIf="isDate(element[header.key]); then thiscontent else thatcontent"></ng-container>
+      <ng-template #thiscontent ><td>{{element[header.key] | date: "dd/MM/yyy"}}</td></ng-template>
+      <ng-template #thatcontent ><td>{{element[header.key]}}</td></ng-template>
+
+
     </ng-container>
     <td *ngIf="displayedColumns.actions.includes(1) || displayedColumns.actions.includes(2)">
       <ng-container class="float-left" *ngIf="displayedColumns.actions.includes(1)"><app-button [buttonConfig]=button1 (newButtonEvent)="buttonClick(setMyWrapper(element, $event))"></app-button></ng-container>

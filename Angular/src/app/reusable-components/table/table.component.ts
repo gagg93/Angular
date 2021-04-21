@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MyTableConfig} from '../my-table-config';
-import {MyButtonConfig} from '../my-button-config';
+import {MyTableConfig} from '../../my-configs/my-table-config';
+import {MyButtonConfig} from '../../my-configs/my-button-config';
 import { Output, EventEmitter } from '@angular/core';
-import {MyWrapper} from '../my-wrapper';
+import {MyWrapper} from '../../my-wrapper';
+import * as moment from 'moment';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class TableComponent implements OnInit {
   ascendingOrder = true;
   currentPage = 0;
   button1: MyButtonConfig =
-    {customCssClass: 'accent', text: 'save', icon: 'done'
+    {customCssClass: 'accent', text: 'edit', icon: 'done'
     };
   button2: MyButtonConfig =
     {customCssClass: 'warn', text: 'delete', icon: 'delete'
@@ -84,11 +85,21 @@ export class TableComponent implements OnInit {
   }
 
   onSearchClick(search: string, field: string): any{
+    field = field.toLowerCase().replace(' ', '_').replace(' ', '_');
     if (search.trim()) {
+      if (search.indexOf('/') > -1) {
+        console.log(search);
+        if (moment(search, 'DD/MM/YYYYTHH:mm', true).format('YYYY-MM-DDTHH:mm')){
+          search = moment(search, 'DD/MM/YYYYTHH:mm').format('YYYY-MM-DDTHH:mm');
+           }
+        }else{
+        search = moment(search, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        console.log(search);
+      }
       this.filteredList = [];
-      this.dataSource.forEach(element =>
-      {if (element[field].toString().toLowerCase().indexOf(search.toLowerCase()) > -1)
-            {this.filteredList.push(element);
+      this.dataSource.forEach(element => {
+        if (element[field].toString().toLowerCase().indexOf(search.toLowerCase()) > -1) {
+        this.filteredList.push(element);
           }});
     }else {
       this.filteredList = this.dataSource;
@@ -98,7 +109,7 @@ export class TableComponent implements OnInit {
 
   onSelectPage(value: string): void{
     if ((Number(value) - 1) > this.filteredList.length / this.displayedColumns.pagination.itemsPerPage - 1) {
-      this.currentPage = this.filteredList.length / this.displayedColumns.pagination.itemsPerPage - 1;
+      this.currentPage = Math.ceil(this.filteredList.length / this.displayedColumns.pagination.itemsPerPage - 1);
     }else{
       this.currentPage = (Number(value) - 1);
     }
@@ -110,8 +121,12 @@ export class TableComponent implements OnInit {
     this.onSelectPage('1');
   }
 
-  buttonClick(url: any): void {
-    this.newTableEvent.emit(url);
+  buttonClick(myWrapper: MyWrapper): void {
+    this.newTableEvent.emit(myWrapper);
+  }
+
+  isDate(field: any): boolean{
+    return Date.parse(field) && isNaN(field);
   }
 }
 

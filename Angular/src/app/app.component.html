@@ -1,6 +1,2 @@
-{{test.command}}
-{{test.object.name}}
-{{test.object.symbol}}
-<app-table [dataSource]="dataSource" [displayedColumns]="myTableConfig"
-           (newTableEvent)="newRoute($event)"
-></app-table>
+<app-dashboard></app-dashboard>
+<router-outlet></router-outlet>
