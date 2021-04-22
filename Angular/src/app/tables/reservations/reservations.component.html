@@ -1,1 +1,5 @@
-<p>reservations works!</p>
+<ng-container *ngIf="dataSource | async as db">
+  <app-table [dataSource]="db" [displayedColumns]="myTableConfig"
+             (newTableEvent)="newRoute($event)"
+  ></app-table>
+</ng-container>

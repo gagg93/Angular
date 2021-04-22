@@ -25,7 +25,13 @@ export class InMemoryDataService implements InMemoryDbService {
       {id: 2, casa_costruttrice: 'citroen', modello: 'c3', anno_di_immatricolazione: 2008, targa: 'fa817ge'},
       {id: 3, casa_costruttrice: 'ferrari', modello: 'modena', anno_di_immatricolazione: 2021, targa: 'gg999gg'}
     ];
-    return {users, vehicles};
+    const reservations = [
+      {id: 1, vehicle_id: '3', user_id: '3', res_begin: '2021-04-27T12:00', res_end: '2021-04-29T14:00'},
+      {id: 2, vehicle_id: '2', user_id: '4', res_begin: '2021-05-22T12:00', res_end: '2021-05-22T14:00'},
+      {id: 3, vehicle_id: '1', user_id: '2', res_begin: '2021-05-23T12:00', res_end: '2021-05-23T14:00'},
+      {id: 4, vehicle_id: '2', user_id: '3', res_begin: '2021-05-26T12:00', res_end: '2021-05-30T14:00'},
+    ];
+    return {users, vehicles, reservations};
   }
 
   // Overrides the genId method to ensure that a hero always has an id.

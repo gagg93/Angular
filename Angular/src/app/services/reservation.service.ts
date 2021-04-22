@@ -3,12 +3,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {Reservation} from '../models/reservation';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
   private reservationsUrl = 'api/reservations';  // URL to web api
+  private reservations;
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -20,11 +22,13 @@ export class ReservationService {
 
   /** GET heroes from the server */
   getReservations(): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(this.reservationsUrl)
+    const ress = this.http.get<Reservation[]>(this.reservationsUrl)
       .pipe(
         tap(_ => console.log('fetched reservations')),
         catchError(this.handleError<Reservation[]>('getReservations', []))
       );
+    ress.subscribe(res => this.reservations = res);
+    return ress;
   }
 
   /** GET hero by id. Return `undefined` when id not found */
@@ -85,6 +89,18 @@ export class ReservationService {
       tap(null),
       catchError(this.handleError<any>('updateReservation'))
     );
+  }
+
+  validate(reservation: Reservation): string{
+    const resBegin = moment(reservation.res_begin);
+    const resEnd = moment(reservation.res_end);
+    if (resBegin.diff(resEnd) > 0) {return 'date invertite'; }
+    const today = moment().add(2, 'days');
+    if (resBegin.diff(today) < 0 || resEnd.diff(today) < 0) {return 'la data di inizio e di fine devono essere almeno tra due giorni'; }
+    console.log(this.reservations);
+    this.reservations.forEach(ress => {if (reservation.vehicle_id === ress.vehicle_id &&
+      (moment(ress.res_begin).diff(resBegin) < 0 && moment(ress.res_end).diff(resBegin) > 0)) {console.log('eccomi'); return 'eccomi'; }});
+    return '';
   }
 
   /**

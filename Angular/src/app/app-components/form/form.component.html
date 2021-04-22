@@ -2,7 +2,7 @@ ciao
 <div *ngFor="let row of object | keys">
   <ng-container *ngIf="row !== 'id'">{{row | titlecase | removeUnderscore}}:
     <ng-container *ngIf="isDate(object[row])">
-      <input type="datetime-local" pattern="yyyy-MM-ddThh:mm:ss.SSSZ" [(ngModel)] = "object[row]" >
+      <input type="datetime-local" pattern="yyyy-MM-ddTHH:mm" [(ngModel)] = "object[row]" >
     </ng-container>
     <ng-container *ngIf="!isDate(object[row])">
       <input type="text" [(ngModel)] = "object[row]" >
