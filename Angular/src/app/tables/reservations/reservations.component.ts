@@ -24,12 +24,12 @@ const orderConfig: MyOrder = {
 };
 
 const search: MySearch = {
-  colums: ['reservation_id', 'vehicle_id' , 'res_begin' , 'res_end']
+  colums: ['user_id', 'vehicle_id' , 'res_begin' , 'res_end']
 };
 
 const pagination: MyPagination =
   {
-    itemsPerPage: 2, itemsPerPageOptions: [2, 5, 10, 20]
+    itemsPerPage: 10, itemsPerPageOptions: [2, 5, 10, 20]
   };
 
 

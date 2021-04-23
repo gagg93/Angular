@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './reusable-components/button/button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -46,9 +46,10 @@ import { ReservationsComponent } from './tables/reservations/reservations.compon
     MatTableModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
+      InMemoryDataService, {dataEncapsulation: false}
     ),
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

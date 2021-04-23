@@ -22,13 +22,15 @@ export class ReservationService {
 
   /** GET heroes from the server */
   getReservations(): Observable<Reservation[]> {
-    const ress = this.http.get<Reservation[]>(this.reservationsUrl)
+    return this.http.get<Reservation[]>(this.reservationsUrl)
       .pipe(
         tap(_ => console.log('fetched reservations')),
         catchError(this.handleError<Reservation[]>('getReservations', []))
       );
-    ress.subscribe(res => this.reservations = res);
-    return ress;
+  }
+
+  getResArray(): Reservation[] {
+    return this.reservations;
   }
 
   /** GET hero by id. Return `undefined` when id not found */
@@ -91,15 +93,24 @@ export class ReservationService {
     );
   }
 
-  validate(reservation: Reservation): string{
+  validate(reservation: Reservation, reservations: Reservation[]): string{
     const resBegin = moment(reservation.res_begin);
     const resEnd = moment(reservation.res_end);
     if (resBegin.diff(resEnd) > 0) {return 'date invertite'; }
     const today = moment().add(2, 'days');
     if (resBegin.diff(today) < 0 || resEnd.diff(today) < 0) {return 'la data di inizio e di fine devono essere almeno tra due giorni'; }
     console.log(this.reservations);
-    this.reservations.forEach(ress => {if (reservation.vehicle_id === ress.vehicle_id &&
-      (moment(ress.res_begin).diff(resBegin) < 0 && moment(ress.res_end).diff(resBegin) > 0)) {console.log('eccomi'); return 'eccomi'; }});
+    let flag = false;
+    reservations.forEach(ress => {
+        if (reservation.vehicle_id === ress.vehicle_id && reservation.id !== ress.id &&
+          (moment(ress.res_begin).diff(resBegin) < 0 && moment(ress.res_end).diff(resBegin) > 0 ||
+            moment(ress.res_begin).diff(resEnd) < 0 && moment(ress.res_end).diff(resEnd) > 0 ||
+            moment(ress.res_begin).diff(resBegin) >= 0 && moment(ress.res_end).diff(resEnd) <= 0
+          )) {
+          flag = true;
+        }
+      });
+    if (flag) {return 'vehicle already booked'; }
     return '';
   }
 

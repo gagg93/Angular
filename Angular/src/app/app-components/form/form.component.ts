@@ -27,12 +27,18 @@ export class FormComponent implements OnInit {
   button3: MyButtonConfig =
     {customCssClass: 'accent', text: 'create', icon: 'done'
     };
+  private reservations;
+  private users;
+  private vehicles;
 
 
 constructor(private activatedRoute: ActivatedRoute, private vehicleService: VehicleService, private reservationService: ReservationService,
             private userService: UserService, private location: Location) { }
 
   ngOnInit(): void {
+    this.reservationService.getReservations().subscribe(res => this.reservations = res);
+    this.userService.getUsers().subscribe(users => this.users = users);
+    this.vehicleService.getVehicles().subscribe(vehicles => this.vehicles = vehicles);
     this.activatedRoute.url.subscribe(params => this.urlSegments = params);
     switch (this.urlSegments[1].toString()){
       case 'vehicle': this.service = this.vehicleService;
@@ -67,8 +73,22 @@ constructor(private activatedRoute: ActivatedRoute, private vehicleService: Vehi
     return;
   }
   if (this.urlSegments[1].toString() === 'reservation') {
-    if (this.service.validate(this.object) !== '') {
-      alert (this.service.validate(this.object));
+    flag = false;
+    console.log(this.users.length);
+    this.users.forEach(user => {if (user.id.toString() === this.object.user_id.toString()) {flag = true; }});
+    if (!flag) {
+      alert('user not existing');
+      return;
+    }
+    flag = false;
+    this.vehicles.forEach(vehicle => {if (vehicle.id.toString() === this.object.vehicle_id.toString()) {flag = true; }});
+    if (!flag) {
+      alert('vehicle not existing');
+      return;
+    }
+    const s = this.service.validate(this.object, this.reservations);
+    if (s !== '') {
+      alert (s);
       return;
     }
   }
