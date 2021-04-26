@@ -21,6 +21,8 @@ import { VehiclesComponent } from './tables/vehicles/vehicles.component';
 import { KeysPipe } from './pipes/keys.pipe';
 import { RemoveUnderscorePipe } from './pipes/remove-underscore.pipe';
 import { ReservationsComponent } from './tables/reservations/reservations.component';
+import {LoginComponent} from './auth/login/login.component';
+import {AuthService} from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { ReservationsComponent } from './tables/reservations/reservations.compon
     KeysPipe,
     RemoveUnderscorePipe,
     ReservationsComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,7 @@ import { ReservationsComponent } from './tables/reservations/reservations.compon
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

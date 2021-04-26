@@ -43,8 +43,9 @@ constructor(private activatedRoute: ActivatedRoute, private vehicleService: Vehi
     switch (this.urlSegments[1].toString()){
       case 'vehicle': this.service = this.vehicleService;
                       this.object = {id: null, casa_costruttrice: '', modello: '', anno_di_immatricolazione: '', targa: null}; break;
-      case 'user': this.service = this.userService;
-                   this.object = {id: null, admin: false, username: '', name: '', surname: '', birth_date: '2021-04-09T11:18'}; break;
+      case 'user': this.service = this.userService; this.object = {
+        id: null, admin: false, password: '', username: '', name: '', surname: '', birth_date: '2021-04-09T11:18'};
+                   break;
       case 'reservation': this.service = this.reservationService;
                           this.object = {id: null, user_id: null, vehicle_id: null , res_begin: moment().add(2, 'days')
                               .format('yyyy-MM-DDTHH:mm'), res_end: moment().add(2, 'days').add(1, 'hour')
@@ -67,7 +68,7 @@ constructor(private activatedRoute: ActivatedRoute, private vehicleService: Vehi
   let flag = true;
   const fields: string[] = [];
   Object.keys(this.object).forEach(key => {if (key !== 'id' && (
-    this.object[key] === null || this.object[key].trim() === '') ) { flag = false; fields.push(key); }});
+    this.object[key] === null || this.object[key].toString().trim() === '') ) { flag = false; fields.push(key); }});
   if (!flag) {
     alert ('field missing ' + fields.toString());
     return;
