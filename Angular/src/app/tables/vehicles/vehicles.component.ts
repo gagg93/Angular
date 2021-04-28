@@ -59,6 +59,9 @@ export class VehiclesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVehicles();
+    if (sessionStorage.getItem('token') === 'fake-jwt-token-customer') {
+      this.myTableConfig.actions = [];
+    }
   }
 
   getVehicles(): void {

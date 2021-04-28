@@ -23,6 +23,7 @@ import { RemoveUnderscorePipe } from './pipes/remove-underscore.pipe';
 import { ReservationsComponent } from './tables/reservations/reservations.component';
 import {LoginComponent} from './auth/login/login.component';
 import {AuthService} from './services/auth.service';
+import { ProfileComponent } from './tables/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {AuthService} from './services/auth.service';
     RemoveUnderscorePipe,
     ReservationsComponent,
     LoginComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

@@ -28,10 +28,10 @@ export class InMemoryDataService implements InMemoryDbService {
       {id: 3, casa_costruttrice: 'ferrari', modello: 'modena', anno_di_immatricolazione: 2021, targa: 'gg999gg'}
     ];
     const reservations = [
-      {id: 1, vehicle_id: '3', user_id: '3', res_begin: '2021-04-27T12:00', res_end: '2021-04-29T14:00'},
-      {id: 2, vehicle_id: '2', user_id: '4', res_begin: '2021-05-22T12:00', res_end: '2021-05-22T14:00'},
-      {id: 3, vehicle_id: '1', user_id: '2', res_begin: '2021-05-23T12:00', res_end: '2021-05-23T14:00'},
-      {id: 4, vehicle_id: '2', user_id: '3', res_begin: '2021-05-26T12:00', res_end: '2021-05-30T14:00'},
+      {id: 1, vehicle_id: '3', user_id: '3', res_begin: '2021-04-27T12:00', res_end: '2021-04-29T14:00', approved: true},
+      {id: 2, vehicle_id: '2', user_id: '4', res_begin: '2021-05-22T12:00', res_end: '2021-05-22T14:00', approved: false},
+      {id: 3, vehicle_id: '1', user_id: '2', res_begin: '2021-05-23T12:00', res_end: '2021-05-23T14:00', approved: true},
+      {id: 4, vehicle_id: '2', user_id: '3', res_begin: '2021-05-26T12:00', res_end: '2021-05-30T14:00', approved: false},
     ];
     return {users, vehicles, reservations};
   }
@@ -49,6 +49,7 @@ export class InMemoryDataService implements InMemoryDbService {
     const { username, password } = body;
     const user = this.createDb().users.find(x => x.username === username && x.password === password);
     if (!user) {return this.error('Username or password is incorrect'); }
+    if (user.admin) {
     return this.ok({
       id: user.id,
       username: user.username,
@@ -56,8 +57,19 @@ export class InMemoryDataService implements InMemoryDbService {
       surname: user.surname,
       birth_date: user.birth_date,
       admin: user.admin,
-      token: 'fake-jwt-token'
+      token: 'fake-jwt-token-admin'
     });
+    }else{
+      return this.ok({
+        id: user.id,
+        username: user.username,
+        name: user.name,
+        surname: user.surname,
+        birth_date: user.birth_date,
+        admin: user.admin,
+        token: 'fake-jwt-token-customer'
+      });
+    }
   }
 
   // tslint:disable-next-line:typedef

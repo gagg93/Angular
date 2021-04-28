@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import {InMemoryDataService} from './in-memory-data.service';
 
 export class User{
   constructor(
@@ -22,13 +23,14 @@ export class JwtResponse{
 export class AuthService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private inMemoryDataService: InMemoryDataService
   ) {
   }
 
   // tslint:disable-next-line:typedef
   authenticate(username, password) {
-    return this.httpClient.post<any>('http://localhost:8080/authenticate', {username, password}).pipe(
+    /*return this.httpClient.post<any>('api/authenticate', {username, password}).pipe(
       map(
         userData => {
           sessionStorage.setItem('username', username);
@@ -36,9 +38,18 @@ export class AuthService {
           sessionStorage.setItem('token', tokenStr);
           return userData;
         }
-      )
-
-    );
+      )*/
+    return this.inMemoryDataService.authenticate({username, password}).pipe(
+      map(
+        (userData: any) => {
+          console.log(userData.body);
+          sessionStorage.setItem('username', userData.body.username);
+          sessionStorage.setItem('token', userData.body.token);
+          sessionStorage.setItem('id', userData.body.id);
+          return userData;
+        }
+        )
+  );
   }
 
 

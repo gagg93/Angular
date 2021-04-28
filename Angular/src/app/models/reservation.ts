@@ -4,4 +4,5 @@ export interface Reservation {
   vehicle_id: number;
   res_begin: Date;
   res_end: Date;
+  approved: boolean;
 }

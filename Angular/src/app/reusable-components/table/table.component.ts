@@ -28,6 +28,12 @@ export class TableComponent implements OnInit {
   button3: MyButtonConfig =
     {customCssClass: 'primary', text: 'new', icon: 'add'
     };
+  button4: MyButtonConfig =
+    {customCssClass: 'primary', text: 'approve', icon: 'done'
+    };
+  button5: MyButtonConfig =
+    {customCssClass: 'warn', text: 'disapprove', icon: 'close'
+    };
   myWrapper: MyWrapper = {object: null, command: 'ciao'};
 
   setMyWrapper(object: any, command: string): MyWrapper{
@@ -91,11 +97,11 @@ export class TableComponent implements OnInit {
         console.log(search);
         if (moment(search, 'DD/MM/YYYYTHH:mm', true).format('YYYY-MM-DDTHH:mm')){
           search = moment(search, 'DD/MM/YYYYTHH:mm').format('YYYY-MM-DDTHH:mm');
-           }
-        }else{
-        search = moment(search, 'DD/MM/YYYY').format('YYYY-MM-DD');
-        console.log(search);
-      }
+           }else{
+          search = moment(search, 'DD/MM/YYYY').format('YYYY-MM-DD');
+          console.log(search);
+        }
+        }
       this.filteredList = [];
       this.dataSource.forEach(element => {
         if (element[field].toString().toLowerCase().indexOf(search.toLowerCase()) > -1) {

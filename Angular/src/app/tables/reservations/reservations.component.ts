@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MyHeaders} from '../../my-configs/my-headers';
 import {MyOrder} from '../../my-configs/my-order';
 import {MySearch} from '../../my-configs/my-search';
@@ -6,7 +6,6 @@ import {MyPagination} from '../../my-configs/my-pagination';
 import {MyTableConfig} from '../../my-configs/my-table-config';
 import {MyTableActionEnum} from '../../my-configs/my-table-action-enum';
 import {MyWrapper} from '../../my-wrapper';
-import {Observable} from 'rxjs';
 import {ReservationService} from '../../services/reservation.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Reservation} from '../../models/reservation';
@@ -14,9 +13,10 @@ import {Reservation} from '../../models/reservation';
 
 const headerconfig: MyHeaders[] = [
   {key: 'user_id' , label: 'User'},
-  {key: 'vehicle_id' , label: 'Vehicle'},
+  {key: 'vehicle_id' , label: 'Macchina'},
   {key: 'res_begin' , label: 'Data di inizio'},
-  {key: 'res_end' , label: 'Data di fine'}];
+  {key: 'res_end' , label: 'Data di fine'},
+  {key: 'approved', label: 'Approvata'}];
 
 const orderConfig: MyOrder = {
   defaultColumn: 'id',
@@ -24,7 +24,7 @@ const orderConfig: MyOrder = {
 };
 
 const search: MySearch = {
-  colums: ['user_id', 'vehicle_id' , 'res_begin' , 'res_end']
+  colums: ['user_id', 'vehicle_id' , 'res_begin' , 'res_end', 'approved']
 };
 
 const pagination: MyPagination =
@@ -53,7 +53,7 @@ export class ReservationsComponent implements OnInit {
 
   title: string;
   test: MyWrapper;
-  dataSource: Observable<Reservation[]> ;
+  dataSource: Reservation[] ;
   myTableConfig = tableconfig;
 
   constructor(private reservationService: ReservationService, private router: Router, private route: ActivatedRoute) {
@@ -61,11 +61,22 @@ export class ReservationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getReservations();
+    if (sessionStorage.getItem('token') === 'fake-jwt-token-admin') {
+      this.myTableConfig.actions = [MyTableActionEnum.APPROVE, MyTableActionEnum.DISAPPROVE];
+    }
   }
 
   getReservations(): void {
-    this.dataSource = this.reservationService.getReservations();
-  }
+    this.reservationService.getReservations().subscribe(x => {if (sessionStorage.getItem('token') === 'fake-jwt-token-admin') {
+      this.dataSource = x;
+    }else{
+      this.dataSource = [];
+      x.forEach(row =>
+    {if (sessionStorage.getItem('token') === 'fake-jwt-token-customer' && row.user_id.toString() === sessionStorage.getItem('id')) {
+      this.dataSource.push(row);
+    }
+    }); }}); }
+
 
   newRoute(event: MyWrapper): void {
     let url;
@@ -75,6 +86,17 @@ export class ReservationsComponent implements OnInit {
     if (event.command === 'new') {
       url = './' + event.command + '/reservation';
     }
+    if (event.command === 'approve') {
+      const res = this.dataSource.find(x => x.id === event.object.id);
+      res.approved = true;
+      this.reservationService.update(res);
+      url = '/reservations';
+    }
+    if (event.command === 'disapprove') {
+      const res = this.dataSource.find(x => x.id === event.object.id);
+      res.approved = false;
+      this.reservationService.update(res);
+      url = '/reservations';    }
     if (event.command === 'delete') {
       if (confirm('Are you sure to delete ' + event.object.id)) {
         url = '/reservations';

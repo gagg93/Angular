@@ -10,6 +10,7 @@ import {Observable} from 'rxjs';
 import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ReservationService} from '../../services/reservation.service';
 
 const headerconfig: MyHeaders[] = [
   {key: 'username' , label: 'Username'},
@@ -53,8 +54,10 @@ export class UsersComponent implements OnInit {
   test: MyWrapper;
   dataSource: Observable<User[]> ;
   myTableConfig = tableconfig;
+  reservations;
 
-  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) {
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute,
+              private reservationService: ReservationService) {
   }
 
   ngOnInit(): void {

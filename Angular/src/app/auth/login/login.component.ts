@@ -23,22 +23,26 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  login(): void {}
-
-  /*login(): void {
+  login(): void {
     const val = this.form.value;
 
     if (val.email && val.password) {
-      this.authService.login(val.email, val.password)
+      this.authService.authenticate(val.email, val.password)
         .subscribe(
           (token) => {
-            console.log('User is logged in');
-            this.router.navigateByUrl('/users');
+            console.log(token.body.token);
+            if (token.body.token === 'fake-jwt-token-admin') {
+              this.router.navigateByUrl('/users');
+            }
+
+            if (token.body.token === 'fake-jwt-token-customer') {
+              this.router.navigateByUrl('/reservations');
+            }
           },
           () => {
-
+            console.log('noooo');
           }
-        )
+        );
     }
-  }*/
+  }
 }
