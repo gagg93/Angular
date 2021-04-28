@@ -6,10 +6,11 @@ import {MyPagination} from '../../my-configs/my-pagination';
 import {MyTableConfig} from '../../my-configs/my-table-config';
 import {MyTableActionEnum} from '../../my-configs/my-table-action-enum';
 import {MyWrapper} from '../../my-wrapper';
-import {Observable} from 'rxjs';
 import {VehicleService} from '../../services/vehicle.service';
 import {Vehicle} from '../../models/vehicle';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ReservationService} from '../../services/reservation.service';
+import {Reservation} from '../../models/reservation';
 
 const headerconfig: MyHeaders[] = [
   {key: 'casa_costruttrice' , label: 'Casa costruttrice'},
@@ -51,10 +52,12 @@ const tableconfig: MyTableConfig = {
 export class VehiclesComponent implements OnInit {
   title: string;
   test: MyWrapper;
-  dataSource: Observable<Vehicle[]> ;
+  dataSource: Vehicle[] ;
   myTableConfig = tableconfig;
+  reservations: Reservation[];
 
-  constructor(private vehicleService: VehicleService, private router: Router, private route: ActivatedRoute) {
+  constructor(private vehicleService: VehicleService, private router: Router, private route: ActivatedRoute,
+              private reservationService: ReservationService) {
   }
 
   ngOnInit(): void {
@@ -65,7 +68,8 @@ export class VehiclesComponent implements OnInit {
   }
 
   getVehicles(): void {
-    this.dataSource = this.vehicleService.getVehicles();
+    this.vehicleService.getVehicles().subscribe(x => this.dataSource = x);
+    this.reservationService.getReservations().subscribe(res => this.reservations = res);
   }
 
   newRoute(event: MyWrapper): void {
@@ -78,10 +82,12 @@ export class VehiclesComponent implements OnInit {
     }
     if (event.command === 'delete') {
       if (confirm('Are you sure to delete ' + event.object.id)) {
-        url = '/vehicles';
-        console.log(event.object.id);
-        this.vehicleService.deleteVehicle(event.object.id).subscribe();
-        this.getVehicles();
+        if (this.reservations.find(x => x.user_id === event.object.id)) {
+          url = '/vehicles';
+          console.log(event.object.id);
+          this.vehicleService.deleteVehicle(event.object.id).subscribe();
+          this.getVehicles();
+        }else {alert('prenotazione a carico'); }
       }else{return; }
     }
     console.log(url);

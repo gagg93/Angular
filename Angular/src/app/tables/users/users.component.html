@@ -1,6 +1,6 @@
 <app-dashboard></app-dashboard>
-<ng-container *ngIf="dataSource | async as db">
-  <app-table [dataSource]="db" [displayedColumns]="myTableConfig"
+<ng-container *ngIf="dataSource">
+  <app-table [dataSource]="dataSource" [displayedColumns]="myTableConfig"
              (newTableEvent)="newRoute($event)"
   ></app-table>
 </ng-container>

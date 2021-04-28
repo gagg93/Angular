@@ -6,11 +6,11 @@ import {MyPagination} from '../../my-configs/my-pagination';
 import {MyTableConfig} from '../../my-configs/my-table-config';
 import {MyTableActionEnum} from '../../my-configs/my-table-action-enum';
 import {MyWrapper} from '../../my-wrapper';
-import {Observable} from 'rxjs';
 import {User} from '../../models/user';
 import {UserService} from '../../services/user.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ReservationService} from '../../services/reservation.service';
+import {Reservation} from '../../models/reservation';
 
 const headerconfig: MyHeaders[] = [
   {key: 'username' , label: 'Username'},
@@ -52,9 +52,9 @@ export class UsersComponent implements OnInit {
 
   title: string;
   test: MyWrapper;
-  dataSource: Observable<User[]> ;
+  dataSource: User[] ;
   myTableConfig = tableconfig;
-  reservations;
+  reservations: Reservation[];
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute,
               private reservationService: ReservationService) {
@@ -65,7 +65,8 @@ export class UsersComponent implements OnInit {
   }
 
   getUsers(): void {
-    this.dataSource = this.userService.getUsers();
+    this.userService.getUsers().subscribe(x => this.dataSource = x);
+    this.reservationService.getReservations().subscribe(res => this.reservations = res);
   }
 
   newRoute(event: MyWrapper): void {
@@ -78,10 +79,12 @@ export class UsersComponent implements OnInit {
     }
     if (event.command === 'delete') {
       if (confirm('Are you sure to delete ' + event.object.id)) {
-        url = '/users';
-        console.log(event.object.id);
-        this.userService.deleteUser(event.object.id).subscribe();
-        this.getUsers();
+        if (this.reservations.find(x => x.user_id === event.object.id)) {
+          url = '/users';
+          console.log(event.object.id);
+          this.userService.deleteUser(event.object.id).subscribe();
+          this.getUsers();
+        }else {alert('prenotazione a carico'); }
       }else{return; }
     }
     console.log(url);
